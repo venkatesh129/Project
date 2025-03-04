@@ -1,0 +1,110 @@
+class Member:
+    def __init__(self, member_id, name, age, membership_type, start_date, end_date):
+        self.member_id = member_id
+        self.name = name
+        self.age = age
+        self.membership_type = membership_type
+        self.start_date = start_date
+        self.end_date = end_date
+        self.is_active = True  # Default to active
+
+    def __str__(self):
+        return f"ID: {self.member_id}, Name: {self.name}, Age: {self.age}, Membership: {self.membership_type}, " \
+               f"Start Date: {self.start_date}, End Date: {self.end_date}, Active: {self.is_active}"
+
+    def renew_membership(self, new_end_date):
+        self.end_date = new_end_date
+        self.is_active = True
+        print(f"Membership for {self.name} renewed till {self.end_date}")
+
+
+class GymMembershipSystem:
+    def __init__(self):
+        self.members = {}  # Store members with member_id as key
+
+    def add_member(self, member_id, name, age, membership_type, start_date, end_date):
+        new_member = Member(member_id, name, age, membership_type, start_date, end_date)
+        self.members[member_id] = new_member
+        print(f"Member {name} added successfully!")
+
+    def view_member(self, member_id):
+        member = self.members.get(member_id)
+        if member:
+            print(member)
+        else:
+            print(f"Member with ID {member_id} not found!")
+
+    def renew_membership(self, member_id, new_end_date):
+        member = self.members.get(member_id)
+        if member:
+            member.renew_membership(new_end_date)
+        else:
+            print(f"Member with ID {member_id} not found!")
+
+    def deactivate_member(self, member_id):
+        member = self.members.get(member_id)
+        if member:
+            member.is_active = False
+            print(f"Membership for {member.name} has been deactivated.")
+        else:
+            print(f"Member with ID {member_id} not found!")
+
+    def display_all_members(self):
+        if not self.members:
+            print("No members found!")
+        else:
+            for member in self.members.values():
+                print(member)
+
+
+# Main program execution
+def main():
+    gym_system = GymMembershipSystem()
+
+    # Menu for the user
+    while True:
+        print("\nGym Membership System")
+        print("1. Add Member")
+        print("2. View Member")
+        print("3. Renew Membership")
+        print("4. Deactivate Membership")
+        print("5. Display All Members")
+        print("6. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            member_id = input("Enter Member ID: ")
+            name = input("Enter Name: ")
+            age = int(input("Enter Age: "))
+            membership_type = input("Enter Membership Type (e.g., Monthly, Yearly): ")
+            start_date = input("Enter Start Date (YYYY-MM-DD): ")
+            end_date = input("Enter End Date (YYYY-MM-DD): ")
+            gym_system.add_member(member_id, name, age, membership_type, start_date, end_date)
+
+        elif choice == "2":
+            member_id = input("Enter Member ID to view: ")
+            gym_system.view_member(member_id)
+
+        elif choice == "3":
+            member_id = input("Enter Member ID to renew: ")
+            new_end_date = input("Enter new End Date (YYYY-MM-DD): ")
+            gym_system.renew_membership(member_id, new_end_date)
+
+        elif choice == "4":
+            member_id = input("Enter Member ID to deactivate: ")
+            gym_system.deactivate_member(member_id)
+
+        elif choice == "5":
+            gym_system.display_all_members()
+
+        elif choice == "6":
+            print("Exiting Gym Membership System...")
+            break
+
+        else:
+            print("Invalid choice! Please select a valid option.")
+
+
+if __name__ == "__main__":
+    main()
